@@ -17,10 +17,8 @@ import React, { useState } from "react";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useAuth } from "@/components/useAuth";
-import { getCalendars } from "expo-localization";
 
 export default function Login() {
-  const userTimezone = getCalendars()[0].timeZone;
   const { loginUser } = useAuth(); // User authentication tools
   const headerHeight = useHeaderHeight(); // Height of header
   const TabBarHeight = useBottomTabBarHeight(); // Height of tabbar
@@ -39,7 +37,6 @@ export default function Login() {
      loginUser(username, password).then((response) => {
       try {
         let locked_until = new Date(response + "Z").toLocaleString("en-US", {
-          timeZone: userTimezone ? userTimezone : undefined,
           hour: "numeric",
           minute: "numeric",
           hour12: true,

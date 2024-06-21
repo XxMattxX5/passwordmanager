@@ -12,7 +12,6 @@ import { Dropdown } from "react-native-element-dropdown";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { List } from "react-native-paper";
 import axios, { AxiosError } from "axios";
-import { getCalendars } from "expo-localization";
 import { useAuth } from "@/components/useAuth";
 import config from "@/config";
 
@@ -47,7 +46,6 @@ export default function passwords({
   newPass,
 }: passwordsProps) {
   const { token, logoutUser } = useAuth();
-  const userTimezone = getCalendars()[0].timeZone;
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
   const [view, setView] = useState("all");
@@ -70,7 +68,7 @@ export default function passwords({
   async function getPasswords() {
     try {
       const response = await axios.get(
-        `${config.API_URL}/api/password_list?timezone=${userTimezone}`,
+        `${config.API_URL}/api/password_list`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

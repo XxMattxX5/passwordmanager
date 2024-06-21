@@ -122,13 +122,6 @@ export default function App() {
     setCreateType(type == "account" ? "account" : "folder");
     setShowPassword(false);
   }
-
-   // Formats creation date
-  function localizeDate(date: string) {
-    return new Date(date + "Z").toLocaleString("en-US", {
-      timeZone: userTimezone ? userTimezone : undefined,
-    });
-  }
   
   // Makes user confirm they want to delete account or folder
   function deleteAlert() {
@@ -618,7 +611,7 @@ export default function App() {
               >
                 Created:
                 {" " +
-                  formatDistanceToNowStrict(localizeDate(display.created), {
+                  formatDistanceToNowStrict(localizeDate(new Date(display.created + "Z")), {
                     addSuffix: true,
                   })}
               </Text>

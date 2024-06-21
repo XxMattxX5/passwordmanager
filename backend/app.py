@@ -403,8 +403,6 @@ class GetProfile(Resource):
         if not user:
             return {"msg": "User not found"}, 400
         
-        user_timezone = request.args.get('timezone', 'UTC') # user's timezone
-        
         # Grabs user information
         username = user.username
         email = user.email
@@ -415,9 +413,7 @@ class GetProfile(Resource):
         for folder in user.folders:
             account_count += folder.count_passwords()
 
-        # Converts created_at time to user's timezone
-        created = utils.convert_to_timezone(user.created_at, user_timezone)
-        created = created.strftime('%Y-%m-%d %H:%M:%S'),
+        created = user.created_at.strftime('%Y-%m-%d %H:%M:%S'),
 
         return {"username": username, "email": email, "folder_count": folder_count, "account_count": account_count, "created": created}, 200
     

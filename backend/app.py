@@ -48,22 +48,29 @@ class Check_Token(Resource):
 # Gives token to frontend if user credentials are correct
 class Login(Resource):
     def post(self):
-        
+
         data = request.get_json()
         username = data.get("username")
         password = data.get("password")
-        
+
         # Makes sure none of the inputs are blank
         if not username or not password:
             return {"msg": "Username and password are required"}, 400
-        
+
         # Checks if user inputs match user information
-        user = User.query.filter(func.lower(User.username) == func.lower(username)).first() 
+        user = User.query.filter(func.lower(User.username) == func.lower(username)).first()
+
+        if user and user.failed_attempts >= 5:
+            return {"msg": "Account Locked"}, 400
+
         if user and bcrypt.check_password_hash(user.password, password):
+            user.failed_attempts = 0
             access_token = create_access_token(identity=user.username)
             decryption_key = str((utils.derive_key(user.password, bytes.fromhex(user.salt)).hex()))
             return {"access_token": access_token, "user": user.username, "decryption_key": decryption_key}
         else:
+            if user:
+                user.failed_attempts += 1
             return {"msg": "Username or password is incorrect"}, 400
         
 @app.route("/")

@@ -14,6 +14,7 @@ class User(db.Model, UserMixin):
     folders = db.relationship("Folder", backref='user',cascade="all, delete-orphan", lazy="select", foreign_keys='Folder.user_id')
     passwords = db.relationship("Password", backref='user',cascade="all, delete-orphan", lazy="select",  foreign_keys='Password.user_id')
     failed_attempts = db.Column(db.Integer, default=0)
+    locked_until =  db.Column(db.DateTime, server_default=db.func.now())
     created_at = db.Column(db.DateTime, server_default=func.now())
     salt = db.Column(db.String(40), default=os.urandom(16).hex())
 

@@ -36,7 +36,7 @@ export default function Profile() {
 
   // Formats creation date
   function localizeDate(date: string) {
-    return new Date(date + " UTC").toLocaleString("en-US", {
+    return new Date(date + "Z").toLocaleString("en-US", {
       timeZone: userTimezone ? userTimezone : undefined,
     });
   }

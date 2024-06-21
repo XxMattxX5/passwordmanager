@@ -25,7 +25,6 @@ import axios, { AxiosError } from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "@/components/useAuth";
 import config from "@/config";
-import { getCalendars } from "expo-localization";
 
 type Account = {
   id: number;
@@ -42,7 +41,6 @@ type Folder = {
 };
 
 export default function App() {
-  const userTimezone = getCalendars()[0].timeZone; // User Timezone
   const { logoutUser, token, decryptPassword } = useAuth(); // User authentication tools
   let { height, width } = useWindowDimensions(); // Window height and width
   const headerHeight = useHeaderHeight(); // Height of header

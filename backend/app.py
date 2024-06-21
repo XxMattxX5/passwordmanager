@@ -144,14 +144,9 @@ class PasswordList(Resource):
         if not user:
             return {"msg": "User not found"}, 400
 
-        user_timezone = request.args.get('timezone', 'UTC') # user's timezone
-
-        folders = user.folders
-        passwords = user.passwords
-
         # Serializes the folders and passwords
-        folders = [serialize_folder(folder, user_timezone) for folder in folders]
-        passwords = [serialize_password(password, user_timezone) for password in passwords]
+        folders = [serialize_folder(folder) for folder in user.folders]
+        passwords = [serialize_password(password) for password in user.passwords]
         data = {
             "folders": folders,
             "passwords": passwords

@@ -28,17 +28,24 @@ export default function Profile() {
   const [newEmail, setNewEmail] = useState("");
   const [folderCount, setFolderCount] = useState(0);
   const [accountCount, setAccountCount] = useState(0);
-  const [created, setCreated] = useState("");
+  const [created, setCreated] = useState<null | string>(null);
 
   useEffect(() => {
     fetchProfileInfo();
   }, []);
 
+  // Formats creation date
+  function localizeDate(date: string) {
+    return new Date(date + " UTC").toLocaleString("en-US", {
+      timeZone: userTimezone ? userTimezone : undefined,
+    });
+  }
+  
   // Fetchs user's profile information
   async function fetchProfileInfo() {
     try {
       const response = await axios.get(
-        `${config.API_URL}/api/get_profile?timezone=${userTimezone}`,
+        `${config.API_URL}/api/get_profile`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -119,18 +126,13 @@ export default function Profile() {
           <Text style={styles.info_text}>Email: {email} </Text>
           <Text style={styles.info_text}>Folders: {folderCount}</Text>
           <Text style={styles.info_text}>Accounts: {accountCount}</Text>
-          {created ? (
+         {created ? (
             <Text style={[styles.info_created, styles.info_text]}>
               Created:
               {" " +
-                formatDistanceToNowStrict(
-                  created
-                    ? String(new Date(created))
-                    : new Date().toLocaleDateString(),
-                  {
-                    addSuffix: true,
-                  }
-                )}
+                formatDistanceToNowStrict(localizeDate(created), {
+                  addSuffix: true,
+                })}
             </Text>
           ) : null}
         </View>

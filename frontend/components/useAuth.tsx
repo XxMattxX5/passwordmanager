@@ -36,13 +36,13 @@ export function UserProvider({ children }: Props) {
       const token = await AsyncStorage.getItem("authToken");
       const key = await AsyncStorage.getItem("key");
       if (!user || !token || !key) {
-        logoutUser();
+        await logoutUser();
         setIsLoading(false);
       } else {
         setUser(user);
         setToken(token);
         setDecryptionKey(key);
-        checkToken(token);
+        await checkToken(token);
         setIsLoading(false);
       }
     }

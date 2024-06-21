@@ -60,8 +60,11 @@ class Login(Resource):
         # Checks if user inputs match user information
         user = User.query.filter(func.lower(User.username) == func.lower(username)).first()
 
-        if user and user.failed_attempts >= 5:
+        if user and user.failed_attempts >= 20:
             return {"msg": "Account Locked"}, 400
+
+        if user and user.locked_until > datetime.now():
+            return {"msg": str(user.locked_until)}, 400
 
         if user and bcrypt.check_password_hash(user.password, password):
             user.failed_attempts = 0
@@ -71,6 +74,13 @@ class Login(Resource):
         else:
             if user:
                 user.failed_attempts += 1
+                if user.failed_attempts == 5:
+                    user.locked_until = datetime.now() + timedelta(minutes=30)
+                if user.failed_attempts == 10:
+                    user.locked_until = datetime.now() + timedelta(hours=1)
+                if user.failed_attempts == 15:
+                    user.locked_until = datetime.now() + timedelta(hours=2)
+
             return {"msg": "Username or password is incorrect"}, 400
         
 @app.route("/")

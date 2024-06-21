@@ -25,6 +25,7 @@ import axios, { AxiosError } from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "@/components/useAuth";
 import config from "@/config";
+import { getCalendars } from "expo-localization";
 
 type Account = {
   id: number;
@@ -41,6 +42,7 @@ type Folder = {
 };
 
 export default function App() {
+  const userTimezone = getCalendars()[0].timeZone; // User Timezone
   const { logoutUser, token, decryptPassword } = useAuth(); // User authentication tools
   let { height, width } = useWindowDimensions(); // Window height and width
   const headerHeight = useHeaderHeight(); // Height of header
@@ -120,6 +122,14 @@ export default function App() {
     setCreateType(type == "account" ? "account" : "folder");
     setShowPassword(false);
   }
+
+   // Formats creation date
+  function localizeDate(date: string) {
+    return new Date(date + " UTC").toLocaleString("en-US", {
+      timeZone: userTimezone ? userTimezone : undefined,
+    });
+  }
+  
   // Makes user confirm they want to delete account or folder
   function deleteAlert() {
     if (!display) {
@@ -608,7 +618,7 @@ export default function App() {
               >
                 Created:
                 {" " +
-                  formatDistanceToNowStrict(display.created, {
+                  formatDistanceToNowStrict(localizeDate(display.created), {
                     addSuffix: true,
                   })}
               </Text>

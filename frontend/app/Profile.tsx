@@ -12,14 +12,12 @@ import StatusMessage from "@/components/StatusMessage";
 import { useAuth } from "@/components/useAuth";
 import Collapsible from "react-native-collapsible";
 import axios, { AxiosError } from "axios";
-import { getCalendars } from "expo-localization";
 import { formatDistanceToNowStrict } from "date-fns";
 import config from "@/config";
 
 export default function Profile() {
   const { height, width } = useWindowDimensions();
   const { token, logoutUser } = useAuth();
-  const userTimezone = getCalendars()[0].timeZone;
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [username, setUsername] = useState("");

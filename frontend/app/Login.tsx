@@ -17,8 +17,10 @@ import React, { useState } from "react";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useAuth } from "@/components/useAuth";
+import { getCalendars } from "expo-localization";
 
 export default function Login() {
+  const userTimezone = getCalendars()[0].timeZone;
   const { loginUser } = useAuth(); // User authentication tools
   const headerHeight = useHeaderHeight(); // Height of header
   const TabBarHeight = useBottomTabBarHeight(); // Height of tabbar
@@ -34,7 +36,23 @@ export default function Login() {
       return;
     }
 
-    loginUser(username, password).then((response) => setLoginError(response));
+     loginUser(username, password).then((response) => {
+      try {
+        let locked_until = new Date(response + " UTC").toLocaleString("en-US", {
+          timeZone: userTimezone ? userTimezone : undefined,
+          hour: "numeric",
+          minute: "numeric",
+          hour12: true,
+        });
+
+        if (locked_until == "Invalid Date") {
+          throw "Error message";
+        }
+        setLoginError("Account locked until: " + locked_until);
+      } catch (error) {
+        setLoginError(response);
+      }
+    });
   }
 
   // Clears login error message

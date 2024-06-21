@@ -38,7 +38,7 @@ export default function Login() {
 
      loginUser(username, password).then((response) => {
       try {
-        let locked_until = new Date(response + " UTC").toLocaleString("en-US", {
+        let locked_until = new Date(response + "Z").toLocaleString("en-US", {
           timeZone: userTimezone ? userTimezone : undefined,
           hour: "numeric",
           minute: "numeric",

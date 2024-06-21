@@ -33,13 +33,6 @@ export default function Profile() {
   useEffect(() => {
     fetchProfileInfo();
   }, []);
-
-  // Formats creation date
-  function localizeDate(date: string) {
-    return new Date(date + "Z").toLocaleString("en-US", {
-      timeZone: userTimezone ? userTimezone : undefined,
-    });
-  }
   
   // Fetchs user's profile information
   async function fetchProfileInfo() {
@@ -130,7 +123,7 @@ export default function Profile() {
             <Text style={[styles.info_created, styles.info_text]}>
               Created:
               {" " +
-                formatDistanceToNowStrict(localizeDate(created), {
+                formatDistanceToNowStrict(new Date(created + "Z"), {
                   addSuffix: true,
                 })}
             </Text>

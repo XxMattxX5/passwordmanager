@@ -120,7 +120,7 @@ export default function App() {
     setCreateType(type == "account" ? "account" : "folder");
     setShowPassword(false);
   }
-  
+
   // Makes user confirm they want to delete account or folder
   function deleteAlert() {
     if (!display) {
@@ -609,7 +609,7 @@ export default function App() {
               >
                 Created:
                 {" " +
-                  formatDistanceToNowStrict(localizeDate(new Date(display.created + "Z")), {
+                  formatDistanceToNowStrict(new Date(display.created + "Z"), {
                     addSuffix: true,
                   })}
               </Text>

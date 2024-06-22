@@ -171,7 +171,7 @@ export function UserProvider({ children }: Props) {
     var ciphertext = CryptoJS.enc.Hex.parse(
       CryptoJS.enc.Hex.stringify(encrypted).substring(32)
     );
-    console.log(key);
+
     const cipherParams = CryptoJS.lib.CipherParams.create({
       ciphertext: ciphertext,
       iv: iv,

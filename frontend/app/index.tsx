@@ -141,7 +141,7 @@ export default function App() {
           },
           {
             text: "Delete",
-            onPress: () => deleteItem("account"),
+            onPress: () => deleteItem(itemType),
           },
         ]
       );
@@ -163,6 +163,7 @@ export default function App() {
       return;
     }
     let url: string;
+    console.log(type);
     if (type === "folder") {
       url = `${config.API_URL}/api/folders?id=${display.id}`;
     } else if (type === "account") {

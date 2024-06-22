@@ -67,14 +67,11 @@ export default function passwords({
 
   async function getPasswords() {
     try {
-      const response = await axios.get(
-        `${config.API_URL}/api/password_list`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get(`${config.API_URL}/api/password_list`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setFolders(response.data.folders);
       setAccounts(response.data.passwords);
     } catch (error) {
